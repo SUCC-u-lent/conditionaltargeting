@@ -18,10 +18,10 @@ public final class TargetTester
 	private TargetTester(Builder builder)
 	{
 		this.enableLogging = builder.enableLogging;
-		this.predicate = (target, source) -> {
+		this.predicate = (source,target) -> {
 			for(TargetingCondition condition : builder.anyConditions)
 			{
-				if(condition.setLogging(enableLogging).evaluate(target, source))
+				if(condition.setLogging(enableLogging).evaluate(source,target))
 				{
 					if (enableLogging)
 						ConditionalTargetingMod.LOGGER.info("[Successful Evaluation] {} evaluated a 'true' response to the 'any' condition: {} against {}", source, condition, target);
@@ -30,7 +30,7 @@ public final class TargetTester
 			}
 			for(TargetingCondition condition : builder.allConditions)
 			{
-				if(!condition.setLogging(enableLogging).evaluate(target, source)){
+				if(!condition.setLogging(enableLogging).evaluate(source,target)){
 					if (enableLogging)
 						ConditionalTargetingMod.LOGGER.info("[Failed Evaluation] {} evaluated a 'false' response to the 'all' condition: {} against {}", source, condition, target);
 					return false;
@@ -38,7 +38,7 @@ public final class TargetTester
 			}
 			for(TargetingCondition condition : builder.noneConditions)
 			{
-				if(condition.setLogging(enableLogging).evaluate(target, source)){
+				if(condition.setLogging(enableLogging).evaluate(source,target)){
 					if (enableLogging)
 						ConditionalTargetingMod.LOGGER.info("[Failed Evaluation] {} evaluated a 'true' response to the 'none' condition: {} against {}", source, condition, target);
 					return false;
@@ -59,9 +59,9 @@ public final class TargetTester
 	 * @return True if the target is valid based on the conditions, false otherwise.
 	 * @implNote Errors in the conditions will not cause a crash but will instead cause the condition to evaluate to false.
 	 */
-	public boolean evaluate(Entity target, Entity source)
+	public boolean evaluate(Entity source, Entity target)
 	{
-		return predicate.test(target, source);
+		return predicate.test(source, target);
 	}
 
 	public static boolean containsDuplicateConditions(TargetingCondition... condition)

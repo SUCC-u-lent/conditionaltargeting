@@ -21,140 +21,140 @@ public final class TargetingCondition
 {
 	// ===== Entity Validity Conditions =====
 	/** This condition can be summarized as: "Is the target not null?" */
-	public static final TargetingCondition IS_TARGET_NOT_NULL = create((target, source) -> target != null);
+	public static final TargetingCondition IS_TARGET_NOT_NULL = create((source,target) -> target != null);
 	/** This condition can be summarized as: "Is the source not null?" */
-	public static final TargetingCondition IS_SOURCE_NOT_NULL = create((target, source) -> target != null);
+	public static final TargetingCondition IS_SOURCE_NOT_NULL = create((source,target) -> target != null);
 	// ===== Entity Type Conditions =====
 	/** This condition can be summarized as: "Is the target a player?" */
-	public static final TargetingCondition IS_PLAYER = create((target, source) -> target instanceof PlayerEntity);
+	public static final TargetingCondition IS_PLAYER = create((source,target) -> target instanceof PlayerEntity);
 	/** This condition can be summarized as: "Is the target not a player?" */
-	public static final TargetingCondition IS_NOT_PLAYER = create((target, source) -> !(target instanceof PlayerEntity));
+	public static final TargetingCondition IS_NOT_PLAYER = create((source,target) -> !(target instanceof PlayerEntity));
 	/** This condition can be summarized as: "Is the target a hostile mob?" */
-	public static final TargetingCondition IS_HOSTILE = create((target, source) -> target instanceof HostileEntity);
+	public static final TargetingCondition IS_HOSTILE = create((source,target) -> target instanceof HostileEntity);
 	/** This condition can be summarized as: "Is the target not a hostile mob?" */
-	public static final TargetingCondition IS_NOT_HOSTILE = create((target, source) -> !(target instanceof HostileEntity));
+	public static final TargetingCondition IS_NOT_HOSTILE = create((source,target) -> !(target instanceof HostileEntity));
 	/** This condition can be summarized as: "Is the target a passive entity?" */
-	public static final TargetingCondition IS_PASSIVE = create((target, source) -> target instanceof PassiveEntity);
+	public static final TargetingCondition IS_PASSIVE = create((source,target) -> target instanceof PassiveEntity);
 
 	// ===== Harming and Harmer Conditions =====
 	/** This condition can be summarized as: "Is the source the attacker of the target?" */
-	public static final TargetingCondition IS_ATTACKER = create((target, source) -> source instanceof LivingEntity living && living.getAttacker() != null && living.getAttacker().equals(target));
+	public static final TargetingCondition IS_ATTACKER = create((source,target) -> source instanceof LivingEntity living && living.getAttacker() != null && living.getAttacker().equals(target));
 	/** This condition can be summarized as: "Is the source not the attacker of the target?" */
-	public static final TargetingCondition IS_NOT_ATTACKER = create((target, source) -> !(source instanceof LivingEntity living) || living.getAttacker() == null || !living.getAttacker().equals(target));
+	public static final TargetingCondition IS_NOT_ATTACKER = create((source,target) -> !(source instanceof LivingEntity living) || living.getAttacker() == null || !living.getAttacker().equals(target));
 	/** This condition can be summarized as: "Is the target the target of the source?" */
-	public static final TargetingCondition IS_TARGETING = create((target, source) -> source instanceof MobEntity living && living.getTarget() != null && living.getTarget().equals(target));
+	public static final TargetingCondition IS_TARGETING = create((source,target) -> source instanceof MobEntity living && living.getTarget() != null && living.getTarget().equals(target));
 	/** This condition can be summarized as: "Is the target not the target of the source?" */
-	public static final TargetingCondition IS_NOT_TARGETING = create((target, source) -> !(source instanceof MobEntity living) || living.getTarget() == null || !living.getTarget().equals(target));
+	public static final TargetingCondition IS_NOT_TARGETING = create((source,target) -> !(source instanceof MobEntity living) || living.getTarget() == null || !living.getTarget().equals(target));
 	/** This condition can be summarized as: "Is the source attacking the target?" */
-	public static final TargetingCondition IS_ATTACKING = create((target, source) -> source instanceof LivingEntity living && living.getAttacking() != null && living.getAttacking().equals(target));
+	public static final TargetingCondition IS_ATTACKING = create((source,target) -> source instanceof LivingEntity living && living.getAttacking() != null && living.getAttacking().equals(target));
 	/** This condition can be summarized as: "Is the source not attacking the target?" */
-	public static final TargetingCondition IS_NOT_ATTACKING = create((target, source) -> !(source instanceof LivingEntity living) || living.getAttacking() == null || !living.getAttacking().equals(target));
+	public static final TargetingCondition IS_NOT_ATTACKING = create((source,target) -> !(source instanceof LivingEntity living) || living.getAttacking() == null || !living.getAttacking().equals(target));
 
 	// ===== Warden Conditions =====
 	/** This condition can be summarized as: "Is the source a warden?" */
-	public static final TargetingCondition IS_WARDEN = create((target, source) -> source instanceof WardenEntity);
+	public static final TargetingCondition IS_WARDEN = create((source,target) -> source instanceof WardenEntity);
 	/** This condition can be summarized as: "Is the source not a warden?" */
-	public static final TargetingCondition IS_NOT_WARDEN = create((target, source) -> !(source instanceof WardenEntity));
+	public static final TargetingCondition IS_NOT_WARDEN = create((source,target) -> !(source instanceof WardenEntity));
 	/** This condition can be summarized as: "Is the source a warden that is angry at the target?" */
-	public static final TargetingCondition IS_WARDEN_ANGRY_AT = create((target, source) -> source instanceof WardenEntity warden && target instanceof PlayerEntity plr && warden.isAngryAt(plr));
+	public static final TargetingCondition IS_WARDEN_ANGRY_AT = create((source,target) -> source instanceof WardenEntity warden && target instanceof PlayerEntity plr && warden.isAngryAt(plr));
 	/** This condition can be summarized as: "Is the source not a warden that is angry at the target?" */
-	public static final TargetingCondition IS_WARDEN_NOT_ANGRY_AT = create((target, source) -> !(source instanceof WardenEntity warden) || !(target instanceof PlayerEntity plr) || !warden.isAngryAt(plr));
+	public static final TargetingCondition IS_WARDEN_NOT_ANGRY_AT = create((source,target) -> !(source instanceof WardenEntity warden) || !(target instanceof PlayerEntity plr) || !warden.isAngryAt(plr));
 	/** This condition can be summarized as: "Is the source a warden that is currently in the angry state?" */
-	public static final TargetingCondition IS_WARDEN_ANGRY = create((target, source) -> source instanceof WardenEntity warden && warden.getAngerState() == AngerState.ANGRY);
+	public static final TargetingCondition IS_WARDEN_ANGRY = create((source,target) -> source instanceof WardenEntity warden && warden.getAngerState() == AngerState.ANGRY);
 	/** This condition can be summarized as: "Is the source a warden that is currently in the agitated state?" */
-	public static final TargetingCondition IS_WARDEN_AGITATED = create((target, source) -> source instanceof WardenEntity warden && warden.getAngerState() == AngerState.AGITATED);
+	public static final TargetingCondition IS_WARDEN_AGITATED = create((source,target) -> source instanceof WardenEntity warden && warden.getAngerState() == AngerState.AGITATED);
 	/** This condition can be summarized as: "Is the source a warden that is currently in the calm state?" */
-	public static final TargetingCondition IS_WARDEN_CALM = create((target, source) -> source instanceof WardenEntity warden && warden.getAngerState() == AngerState.CALM);
+	public static final TargetingCondition IS_WARDEN_CALM = create((source,target) -> source instanceof WardenEntity warden && warden.getAngerState() == AngerState.CALM);
 
 	// ===== Team and Relationship Conditions =====
 	/** This condition can be summarized as: "Is the source a teammate of the target?" */
-	public static final TargetingCondition IS_ALLY = create((target, source) -> source.isTeammate(target));
+	public static final TargetingCondition IS_ALLY = create(Entity::isTeammate);
 	/** This condition can be summarized as: "Is the source not a teammate of the target?" */
-	public static final TargetingCondition IS_NOT_ALLY = create((target, source) -> !source.isTeammate(target));
+	public static final TargetingCondition IS_NOT_ALLY = create((source,target) -> !source.isTeammate(target));
 	/** This condition can be summarized as: "Is the target the same entity type as the source?" */
-	public static final TargetingCondition IS_SAME_TYPE = create((target, source) -> target.getClass() == source.getClass());
+	public static final TargetingCondition IS_SAME_TYPE = create((source,target) -> target.getClass() == source.getClass());
 	/** This condition can be summarized as: "Is the target a different entity type than the source?" */
-	public static final TargetingCondition IS_DIFFERENT_TYPE = create((target, source) -> target.getClass() != source.getClass());
+	public static final TargetingCondition IS_DIFFERENT_TYPE = create((source,target) -> target.getClass() != source.getClass());
 
 	// ===== Entity Group Conditions =====
 	/** This condition can be summarized as: "Does the target belong to the undead entity group?" */
-	public static final TargetingCondition IS_UNDEAD = create((target, source) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.UNDEAD);
+	public static final TargetingCondition IS_UNDEAD = create((source,target) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.UNDEAD);
 	/** This condition can be summarized as: "Does the target belong to the aquatic entity group?" */
-	public static final TargetingCondition IS_AQUATIC = create((target, source) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.AQUATIC);
+	public static final TargetingCondition IS_AQUATIC = create((source,target) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.AQUATIC);
 	/** This condition can be summarized as: "Does the target belong to the arthropod entity group?" */
-	public static final TargetingCondition IS_ARTHROPOD = create((target, source) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.ARTHROPOD);
+	public static final TargetingCondition IS_ARTHROPOD = create((source,target) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.ARTHROPOD);
 	/** This condition can be summarized as: "Does the target belong to the illager entity group?" */
-	public static final TargetingCondition IS_ILLAGER = create((target, source) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.ILLAGER);
+	public static final TargetingCondition IS_ILLAGER = create((source,target) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.ILLAGER);
 	/** This condition can be summarized as: "Does the target belong to the default entity group?" */
-	public static final TargetingCondition IS_DEFAULT_GROUP = create((target, source) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.DEFAULT);
+	public static final TargetingCondition IS_DEFAULT_GROUP = create((source,target) -> target instanceof LivingEntity living && living.getGroup() == EntityGroup.DEFAULT);
 
 	// ===== Life State Conditions =====
 	/** This condition can be summarized as: "Is the target alive?" */
-	public static final TargetingCondition IS_ALIVE = create((target, source) -> target instanceof LivingEntity living && living.isAlive());
+	public static final TargetingCondition IS_ALIVE = create((source,target) -> target instanceof LivingEntity living && living.isAlive());
 	/** This condition can be summarized as: "Is the target dead?" */
-	public static final TargetingCondition IS_DEAD = create((target, source) -> target instanceof LivingEntity living && !living.isAlive());
+	public static final TargetingCondition IS_DEAD = create((source,target) -> target instanceof LivingEntity living && !living.isAlive());
 	/** This condition can be summarized as: "Has the target been removed from the world?" */
-	public static final TargetingCondition IS_REMOVED = create((target, source) -> target.isRemoved());
+	public static final TargetingCondition IS_REMOVED = create((source,target) -> target.isRemoved());
 	/** This condition can be summarized as: "Can the source target the target?" */
-	public static final TargetingCondition CAN_TARGET = create((target, source) -> source instanceof LivingEntity sourceEntity && target instanceof LivingEntity targetEntity && sourceEntity.canTarget(targetEntity));
+	public static final TargetingCondition CAN_TARGET = create((source,target) -> source instanceof LivingEntity sourceEntity && target instanceof LivingEntity targetEntity && sourceEntity.canTarget(targetEntity));
 
 	// ===== Environmental State Conditions =====
 	/** This condition can be summarized as: "Is the target on the ground?" */
-	public static final TargetingCondition IS_ON_GROUND = create((target, source) -> target.isOnGround());
+	public static final TargetingCondition IS_ON_GROUND = create((source,target) -> target.isOnGround());
 	/** This condition can be summarized as: "Is the target in water?" */
-	public static final TargetingCondition IS_IN_WATER = create((target, source) -> target.isTouchingWater());
+	public static final TargetingCondition IS_IN_WATER = create((source,target) -> target.isTouchingWater());
 	/** This condition can be summarized as: "Is the target in lava?" */
-	public static final TargetingCondition IS_IN_LAVA = create((target, source) -> target.isInLava());
+	public static final TargetingCondition IS_IN_LAVA = create((source,target) -> target.isInLava());
 	/** This condition can be summarized as: "Is the target on fire?" */
-	public static final TargetingCondition IS_BURNING = create((target, source) -> target.isOnFire());
+	public static final TargetingCondition IS_BURNING = create((source,target) -> target.isOnFire());
 	/** This condition can be summarized as: "Is the target in water?" */
-	public static final TargetingCondition IS_IN_BUBBLE_COLUMN = create((target, source) -> target.isSubmergedInWater());
+	public static final TargetingCondition IS_IN_BUBBLE_COLUMN = create((source,target) -> target.isSubmergedInWater());
 
 	// ===== Player-Specific State Conditions =====
 	/** This condition can be summarized as: "Is the target sneaking?" */
-	public static final TargetingCondition IS_SNEAKING = create((target, source) -> target instanceof LivingEntity living && living.isSneaking());
+	public static final TargetingCondition IS_SNEAKING = create((source,target) -> target instanceof LivingEntity living && living.isSneaking());
 	/** This condition can be summarized as: "Is the target sprinting?" */
-	public static final TargetingCondition IS_SPRINTING = create((target, source) -> target instanceof LivingEntity living && living.isSprinting());
+	public static final TargetingCondition IS_SPRINTING = create((source,target) -> target instanceof LivingEntity living && living.isSprinting());
 	/** This condition can be summarized as: "Is the target riding a vehicle?" */
-	public static final TargetingCondition IS_RIDING = create((target, source) -> target.hasVehicle());
+	public static final TargetingCondition IS_RIDING = create((source,target) -> target.hasVehicle());
 	/** This condition can be summarized as: "Does the target have passengers?" */
-	public static final TargetingCondition HAS_PASSENGER = create((target, source) -> target.hasPassengers());
+	public static final TargetingCondition HAS_PASSENGER = create((source,target) -> target.hasPassengers());
 	/** This condition can be summarized as: "Is the source the vehicle of the target?" */
-	public static final TargetingCondition IS_VEHICLE = create((target, source) -> target.getVehicle() != null && target.getVehicle().equals(source));
+	public static final TargetingCondition IS_VEHICLE = create((source,target) -> target.getVehicle() != null && target.getVehicle().equals(source));
 	/** This condition can be summarized as: "Is the source a passenger of the target?" */
 	public static final TargetingCondition IS_PASSENGER = create(Entity::hasPassenger);
 
 	// ===== Visibility and Awareness Conditions =====
 	/** This condition can be summarized as: "Can the source see the target?" */
-	public static final TargetingCondition CAN_SEE = create((target, source) -> source instanceof LivingEntity sourceEntity && sourceEntity.canSee(target));
+	public static final TargetingCondition CAN_SEE = create((source,target) -> source instanceof LivingEntity sourceEntity && sourceEntity.canSee(target));
 
 	// ===== Health and Damage Conditions =====
 	/** This condition can be summarized as: "Is the target at full health?" */
-	public static final TargetingCondition IS_FULL_HEALTH = create((target, source) -> target instanceof LivingEntity living && living.getHealth() >= living.getMaxHealth());
+	public static final TargetingCondition IS_FULL_HEALTH = create((source,target) -> target instanceof LivingEntity living && living.getHealth() >= living.getMaxHealth());
 	/** This condition can be summarized as: "Is the target at low health (below 50%)?" */
-	public static final TargetingCondition IS_LOW_HEALTH = create((target, source) -> target instanceof LivingEntity living && living.getHealth() < living.getMaxHealth() / 2);
+	public static final TargetingCondition IS_LOW_HEALTH = create((source,target) -> target instanceof LivingEntity living && living.getHealth() < living.getMaxHealth() / 2);
 	/** This condition can be summarized as: "Is the target injured (not at full health)?" */
-	public static final TargetingCondition IS_INJURED = create((target, source) -> target instanceof LivingEntity living && living.getHealth() < living.getMaxHealth());
+	public static final TargetingCondition IS_INJURED = create((source,target) -> target instanceof LivingEntity living && living.getHealth() < living.getMaxHealth());
 
 	// ===== Distance Conditions =====
 	/** This condition can be summarized as: "Is the target within 5 blocks of the source?" */
-	public static final TargetingCondition IS_CLOSE = create((target, source) -> source.distanceTo(target) <= 5.0);
+	public static final TargetingCondition IS_CLOSE = create((source,target) -> source.distanceTo(target) <= 5.0);
 	/** This condition can be summarized as: "Is the target within 10 blocks of the source?" */
-	public static final TargetingCondition IS_NEAR = create((target, source) -> source.distanceTo(target) <= 10.0);
+	public static final TargetingCondition IS_NEAR = create((source,target) -> source.distanceTo(target) <= 10.0);
 	/** This condition can be summarized as: "Is the target within 20 blocks of the source?" */
-	public static final TargetingCondition IS_WITHIN_RANGE = create((target, source) -> source.distanceTo(target) <= 20.0);
+	public static final TargetingCondition IS_WITHIN_RANGE = create((source,target) -> source.distanceTo(target) <= 20.0);
 	/** This condition can be summarized as: "Is the target further than 5 blocks from the source?" */
-	public static final TargetingCondition IS_FAR = create((target, source) -> source.distanceTo(target) > 5.0);
+	public static final TargetingCondition IS_FAR = create((source,target) -> source.distanceTo(target) > 5.0);
 
 	// ===== Dimension Conditions =====
 	/** This condition can be summarized as: "Is the target in the same dimension as the source?" */
-	public static final TargetingCondition IS_SAME_DIMENSION = create((target, source) -> source.getWorld() == target.getWorld());
+	public static final TargetingCondition IS_SAME_DIMENSION = create((source,target) -> source.getWorld() == target.getWorld());
 	/** This condition can be summarized as: "Is the target in the overworld?" */
-	public static final TargetingCondition IS_IN_OVERWORLD = create((target, source) -> target.getWorld().getRegistryKey().equals(net.minecraft.world.World.OVERWORLD));
+	public static final TargetingCondition IS_IN_OVERWORLD = create((source,target) -> target.getWorld().getRegistryKey().equals(net.minecraft.world.World.OVERWORLD));
 	/** This condition can be summarized as: "Is the target in the nether?" */
-	public static final TargetingCondition IS_IN_NETHER = create((target, source) -> target.getWorld().getRegistryKey().equals(net.minecraft.world.World.NETHER));
+	public static final TargetingCondition IS_IN_NETHER = create((source,target) -> target.getWorld().getRegistryKey().equals(net.minecraft.world.World.NETHER));
 	/** This condition can be summarized as: "Is the target in the end?" */
-	public static final TargetingCondition IS_IN_END = create((target, source) -> target.getWorld().getRegistryKey().equals(net.minecraft.world.World.END));
+	public static final TargetingCondition IS_IN_END = create((source,target) -> target.getWorld().getRegistryKey().equals(net.minecraft.world.World.END));
 
 	// The actual code for the condition.
 	final BiPredicate<Entity, Entity> predicate;
@@ -175,7 +175,7 @@ public final class TargetingCondition
 	 */
 	public TargetingCondition invertOrder()
 	{
-		return create((target, source) -> this.predicate.test(source, target), this.enableLogging);
+		return create((source,target) -> this.predicate.test(target,source), this.enableLogging);
 	}
 
 	/**
@@ -184,7 +184,7 @@ public final class TargetingCondition
 	 */
 	public TargetingCondition negate()
 	{
-		return create((target, source) -> !this.predicate.test(target, source), this.enableLogging);
+		return create((source,target) -> !this.predicate.test(source,target), this.enableLogging);
 	}
 
 	/**
@@ -196,9 +196,9 @@ public final class TargetingCondition
 	 */
 	public TargetingCondition combine(TargetingCondition other, BiPredicate<Boolean, Boolean> combiner)
 	{
-		return create((target, source) -> {
-			boolean thisResult = this.evaluate(target, source);
-			boolean otherResult = other.evaluate(target, source);
+		return create((source,target) -> {
+			boolean thisResult = this.evaluate(source,target);
+			boolean otherResult = other.evaluate(source,target);
 			return combiner.test(thisResult, otherResult);
 		}, this.enableLogging);
 	}
@@ -225,11 +225,11 @@ public final class TargetingCondition
 	 * @param source The entity that is trying to target the target. This can be used for conditions that depend on the source, such as distance or line of sight.
 	 * @return True if the condition is met based on the logic defined in the predicate, and false otherwise. If an exception occurs during evaluation, it will be caught and logged, and the method will return false to indicate that the condition was not met.
 	 */
-	public boolean evaluate(Entity target, Entity source)
+	public boolean evaluate(Entity source, Entity target)
 	{
 		boolean resolution = false;
 		try{
-			resolution = predicate.test(target, source);
+			resolution = predicate.test(source,target);
 		}catch (Exception e)
 		{
 			ConditionalTargetingMod.LOGGER.error("Error evaluating targeting condition: " + e.getMessage(), e);

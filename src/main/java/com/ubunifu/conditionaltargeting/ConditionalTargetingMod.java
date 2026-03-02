@@ -10,7 +10,5 @@ public class ConditionalTargetingMod implements ModInitializer {
 	static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
-	public void onInitialize(ModContainer mod) {
-		LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
-	}
+	public void onInitialize(ModContainer mod){}
 }
