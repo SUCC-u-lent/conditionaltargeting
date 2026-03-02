@@ -19,7 +19,7 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.ubunifu.conditionaltargeting.ExampleMod"
+			"init": "com.ubunifu.conditionaltargeting.ConditionalTargetingMod"
 		},
 		"depends": [
 			{
