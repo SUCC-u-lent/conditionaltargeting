@@ -162,16 +162,20 @@ public final class TargetingCondition
 	{
 		this.predicate = predicate;
 	}
+	boolean enableLogging = false;
 
-	// Swaps the target and source in the condition, meaning `target` will be treated as `source` and `source` will be treated as `target`.
-
+	public TargetingCondition setLogging(boolean enableLogging)
+	{
+		this.enableLogging = enableLogging;
+		return this;
+	}
 	/**
 	 * Creates a new TargetingCondition that evaluates the same logic as this condition but with the target and source entities swapped. This can be useful for creating complementary conditions without having to rewrite the logic.
 	 * @return A new TargetingCondition with the target and source swapped in the evaluation logic.
 	 */
 	public TargetingCondition invertOrder()
 	{
-		return create((target, source) -> this.predicate.test(source, target));
+		return create((target, source) -> this.predicate.test(source, target), this.enableLogging);
 	}
 
 	/**
@@ -180,7 +184,7 @@ public final class TargetingCondition
 	 */
 	public TargetingCondition negate()
 	{
-		return create((target, source) -> !this.predicate.test(target, source));
+		return create((target, source) -> !this.predicate.test(target, source), this.enableLogging);
 	}
 
 	/**
@@ -196,7 +200,7 @@ public final class TargetingCondition
 			boolean thisResult = this.evaluate(target, source);
 			boolean otherResult = other.evaluate(target, source);
 			return combiner.test(thisResult, otherResult);
-		});
+		}, this.enableLogging);
 	}
 
 	/**
@@ -208,6 +212,12 @@ public final class TargetingCondition
 	{
 		return new TargetingCondition(predicate);
 	}
+	private static TargetingCondition create(BiPredicate<Entity, Entity> predicate, boolean enableLogging)
+	{
+		TargetingCondition toReturn = new TargetingCondition(predicate);
+		toReturn.enableLogging = enableLogging;
+		return toReturn;
+	}
 
 	/**
 	 * Evaluates the condition against a given target and source entity. The target is the entity being evaluated as a potential target, while the source is the entity that is trying to target the target. This method returns true if the condition is met based on the logic defined in the predicate, and false otherwise. If an exception occurs during evaluation, it will be caught and logged, and the method will return false to indicate that the condition was not met.
@@ -217,13 +227,17 @@ public final class TargetingCondition
 	 */
 	public boolean evaluate(Entity target, Entity source)
 	{
+		boolean resolution = false;
 		try{
-			return predicate.test(target, source);
+			resolution = predicate.test(target, source);
 		}catch (Exception e)
 		{
 			ConditionalTargetingMod.LOGGER.error("Error evaluating targeting condition: " + e.getMessage(), e);
-			return false;
 		}
+		if (enableLogging)
+		{
+			ConditionalTargetingMod.LOGGER.info("Evaluating condition: {}\n- with source: {}\n- and target: {}\n- resolution: {}", this, source, target, resolution);
+		}
+		return resolution;
 	}
-
 }

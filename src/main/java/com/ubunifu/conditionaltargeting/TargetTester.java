@@ -17,23 +17,40 @@ public final class TargetTester
 {
 	private TargetTester(Builder builder)
 	{
+		this.enableLogging = builder.enableLogging;
 		this.predicate = (target, source) -> {
 			for(TargetingCondition condition : builder.anyConditions)
 			{
-				if(condition.evaluate(target, source)) return true;
+				if(condition.setLogging(enableLogging).evaluate(target, source))
+				{
+					if (enableLogging)
+						ConditionalTargetingMod.LOGGER.info("[Successful Evaluation] {} evaluated a 'true' response to the 'any' condition: {} against {}", source, condition, target);
+					break; // Was previously `return true;` but that meant it ignored the all and none conditions.
+				}
 			}
 			for(TargetingCondition condition : builder.allConditions)
 			{
-				if(!condition.evaluate(target, source)) return false;
+				if(!condition.setLogging(enableLogging).evaluate(target, source)){
+					if (enableLogging)
+						ConditionalTargetingMod.LOGGER.info("[Failed Evaluation] {} evaluated a 'false' response to the 'all' condition: {} against {}", source, condition, target);
+					return false;
+				}
 			}
 			for(TargetingCondition condition : builder.noneConditions)
 			{
-				if(condition.evaluate(target, source)) return false;
+				if(condition.setLogging(enableLogging).evaluate(target, source)){
+					if (enableLogging)
+						ConditionalTargetingMod.LOGGER.info("[Failed Evaluation] {} evaluated a 'true' response to the 'none' condition: {} against {}", source, condition, target);
+					return false;
+				}
 			}
+			if (enableLogging)
+				ConditionalTargetingMod.LOGGER.info("[Successful Evaluation] {} has completed an evaluation against {} and all checks have finished.", source, target);
 			return true;
 		};
 	}
 	BiPredicate<Entity, Entity> predicate;
+	boolean enableLogging;
 
 	/**
 	 * Evaluates the target against the conditions. The source is the entity that is trying to target the target. This can be used for conditions that depend on the source, such as distance or line of sight.
@@ -65,6 +82,7 @@ public final class TargetTester
 		private final List<TargetingCondition> anyConditions = new ArrayList<>();
 		private final List<TargetingCondition> allConditions = new ArrayList<>();
 		private final List<TargetingCondition> noneConditions = new ArrayList<>();
+		private boolean enableLogging = false;
 
 		/**
 		 * Creates a new Builder with no conditions. You can add conditions using the addAnyCondition, addAllCondition, and addNoneCondition methods.
@@ -84,6 +102,16 @@ public final class TargetTester
 				if(anyConditions.contains(condition) || allConditions.contains(condition) || noneConditions.contains(condition))
 					return true;
 			return false;
+		}
+
+		/**
+		 * Enables logging for the builder. If enabled, the builder will log the result of every evaluation of the TargetTester built by this builder.
+ 		 * @return The builder with logging enabled, so you can chain method calls.
+		 */
+		public Builder enableLogging()
+		{
+			this.enableLogging = true;
+			return this;
 		}
 
 		/**
