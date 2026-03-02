@@ -19,33 +19,61 @@ public final class TargetTester
 	{
 		this.enableLogging = builder.enableLogging;
 		this.predicate = (source,target) -> {
-			for(TargetingCondition condition : builder.anyConditions)
-			{
-				if(condition.setLogging(enableLogging).evaluate(source,target))
-				{
-					if (enableLogging)
-						ConditionalTargetingMod.LOGGER.info("[Successful Evaluation] {} evaluated a 'true' response to the 'any' condition: {} against {}", source, condition, target);
-					break; // Was previously `return true;` but that meant it ignored the all and none conditions.
+			if (!builder.anyConditions.isEmpty()) {
+				boolean anyMatched = false;
+
+				for (TargetingCondition condition : builder.anyConditions) {
+					if (condition.setLogging(enableLogging).evaluate(source, target)) {
+						if (enableLogging)
+							ConditionalTargetingMod.LOGGER.info(
+								"[Successful Evaluation] {} evaluated a 'true' response to the 'any' condition: {} against {}",
+								source, condition, target
+							);
+
+						anyMatched = true;
+						break;
+					}
 				}
-			}
-			for(TargetingCondition condition : builder.allConditions)
-			{
-				if(!condition.setLogging(enableLogging).evaluate(source,target)){
+
+				if (!anyMatched) {
 					if (enableLogging)
-						ConditionalTargetingMod.LOGGER.info("[Failed Evaluation] {} evaluated a 'false' response to the 'all' condition: {} against {}", source, condition, target);
+						ConditionalTargetingMod.LOGGER.info(
+							"[Failed Evaluation] {} failed all 'any' conditions against {}",
+							source, target
+						);
+
 					return false;
 				}
 			}
-			for(TargetingCondition condition : builder.noneConditions)
-			{
-				if(condition.setLogging(enableLogging).evaluate(source,target)){
+			for (TargetingCondition condition : builder.allConditions) {
+				if (!condition.setLogging(enableLogging).evaluate(source, target)) {
 					if (enableLogging)
-						ConditionalTargetingMod.LOGGER.info("[Failed Evaluation] {} evaluated a 'true' response to the 'none' condition: {} against {}", source, condition, target);
+						ConditionalTargetingMod.LOGGER.info(
+							"[Failed Evaluation] {} evaluated a 'false' response to the 'all' condition: {} against {}",
+							source, condition, target
+						);
+
 					return false;
 				}
 			}
+			for (TargetingCondition condition : builder.noneConditions) {
+				if (condition.setLogging(enableLogging).evaluate(source, target)) {
+					if (enableLogging)
+						ConditionalTargetingMod.LOGGER.info(
+							"[Failed Evaluation] {} evaluated a 'true' response to the 'none' condition: {} against {}",
+							source, condition, target
+						);
+
+					return false;
+				}
+			}
+
 			if (enableLogging)
-				ConditionalTargetingMod.LOGGER.info("[Successful Evaluation] {} has completed an evaluation against {} and all checks have finished.", source, target);
+				ConditionalTargetingMod.LOGGER.info(
+					"[Successful Evaluation] {} has completed an evaluation against {} and all checks have finished.",
+					source, target
+				);
+
 			return true;
 		};
 	}
